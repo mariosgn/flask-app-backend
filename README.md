@@ -40,10 +40,11 @@ Required Work
   - However, clients must send the same authentication values used in the GET and POST requests
     (e.g. token or session ID) when connecting.
   - These values will be ignored for now, but will be parsed and stored for future use.
+  - The current websocket server will send same message to all connected clients, broadcast: this is fine 
 
 - Dependencies:
   - The project must include `django-allauth` for social authentication (Google/Facebook).
-  - Minimal other dependencies are expected (standard Django + WebSocket server).
+  - Minimal other dependencies are expected.
 
 Other Notes
 -----------
