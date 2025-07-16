@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket Monitor</title>
+    <style>
+        html {
+            font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #092E20;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 800px;
+        }
+
+        pre {
+            background: #eee;
+            padding: 1rem;
+            height: 300px;
+            overflow-y: scroll;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-top: 1rem;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WebSocket monitor!</h1>
+        <p>Messages received from the server:</p>
+        <pre id="log"></pre>
+    </div>
+
+    <script>
+        const logEl = document.getElementById("log");
+        let ws = null;
+        let reconnectDelay = 5000;
+
+        function log(message) {
+            logEl.textContent += message + "\n";
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function connect() {
+            ws = new WebSocket("ws://localhost:8765");
+
+            ws.onopen = () => log("[WebSocket connected]");
+            ws.onmessage = event => log("[Message] " + event.data);
+            ws.onclose = () => {
+                log("[WebSocket disconnected, retrying in 5s...]");
+                setTimeout(connect, reconnectDelay);
+            };
+            ws.onerror = err => {
+                log("[WebSocket error]");
+                ws.close();
+            };
+        }
+
+        connect();
+    </script>
+</body>
+</html>
