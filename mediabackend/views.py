@@ -12,14 +12,6 @@ import random
 
 from django.views.generic import TemplateView
 
-"""
-To test this function (whithout autentication):
-curl -X POST http://localhost:8000/media_post/ \
-  -F "file=@audio_test_1.mp3" \
-  -F "param1=test1" \
-  -F "param2=test2"
-"""
-
 UPLOAD_PATH = "store/upload/"
 AUDIO_TESTS_PATH = "store/audio_tests/"
 WS_MESSAGES_PATH = "store/websocket_messages/"
@@ -42,6 +34,14 @@ def send_message():
     with open(message_file, 'w') as f:
         json.dump(msg, f)
 
+
+"""
+To test this function (whithout autentication):
+curl -X POST http://localhost:8000/media_post/ \
+  -F "file=@audio_test_1.mp3" \
+  -F "param1=test1" \
+  -F "param2=test2"
+"""
 @csrf_exempt
 def media_post(request):
     if request.method != 'POST':
@@ -76,6 +76,7 @@ def media_post(request):
         'param2': param2,
         'saved_to': destination_path
     })
+
 
 """
 To test this function (whithout autentication):
