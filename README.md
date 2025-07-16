@@ -1,9 +1,31 @@
 # Flutter App Backend
 
-This is a minimal Django backend used for testing a Flutter application that:
+This is a minimal Django-based backend designed to demonstrate a simple interaction between a web client and a WebSocket server.
 
-- Sends and receives photo and audio messages via HTTP
-- Receives and sends WebSocket events
+Components
+----------
+
+1. Django Server
+   - Exposes a single web page at the root URL.
+   - Serves a static HTML page that connects to a WebSocket on load.
+   - Accepts two types of HTTP requests via curl:
+     - A POST request to upload a file (for debug purposes), which is saved into a local directory called "store/" at the root of the project.
+     - A GET request to download one of three predefined audio files available in the repository.
+
+2. WebSocket Daemon (Python)
+   - Must be launched separately before opening the page.
+   - Listens on ws://localhost:8765.
+   - The frontend HTML page automatically tries to connect to this WebSocket when loaded.
+   - Sends a "[ping] Server heartbeat" message every 10 seconds to all connected clients.
+   - Echoes back to all clients any text file added into the "websocket_messages/" directory:
+     - When a .txt file is placed in that directory, its content is read and immediately sent to all connected clients.
+     - The file is deleted after being sent.
+
+Trigger Behavior
+----------------
+
+When a file is uploaded via the POST endpoint, the server triggers a delayed message (between 1 and 10 seconds) sent via WebSocket to the connected client. This message is predefined and demonstrates asynchronous server-to-client communication.
+
 
 ---
 
