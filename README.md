@@ -26,16 +26,41 @@ Trigger Behavior
 
 When a file is uploaded via the POST endpoint, the server triggers a delayed message (between 1 and 10 seconds) sent via WebSocket to the connected client. This message is predefined and demonstrates asynchronous server-to-client communication.
 
+Required Work
+------------------------------------
 
----
+- Both GET and POST endpoints must require Django user authentication.
+  - These endpoints will only accept requests authenticated via the Django user
+    created during login from the Flutter app.
+  - Authentication will likely use token-based headers or session cookies.
+  - Additional checks such as validating file IDs will be handled later (not required now).
 
-## 🛠️ Requirements
+- WebSocket Authentication:
+  - The WebSocket server does NOT enforce authentication at this stage.
+  - However, clients must send the same authentication values used in the GET and POST requests
+    (e.g. token or session ID) when connecting.
+  - These values will be ignored for now, but will be parsed and stored for future use.
+
+- Dependencies:
+  - The project must include `django-allauth` for social authentication (Google/Facebook).
+  - Minimal other dependencies are expected (standard Django + WebSocket server).
+
+Other Notes
+-----------
+
+- The WebSocket server will remain as a standalone Python script (not Django-integrated).
+- Future integration of authentication or routing logic in the WebSocket server will be handled separately.
+- Static file handling, admin configuration, and model extensions are outside the scope of this minimal backend.
+
+Requirements
+-----------
 
 - Python 3.11+
 - `virtualenv`
 - `pip`
 
-## Setup Instructions
+Setup Instructions
+-----------
 
 Clone the repository and start the project
 
@@ -48,7 +73,8 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-## Running the Backend
+Running the Backend
+-----------
 
 Start the django debug server (in the project directory)
 
