@@ -62,3 +62,10 @@ To download an audio file without authentication:
 ```bash
 curl http://localhost:8000/media_get/?media_id=904cb473-5d17-4885-9363-46f466a7d140 --output output.mp3
 ```
+
+To send a message to the client via websocket
+```bash
+echo ' {"action": "PLAY", "value": "fake-uuuid"}' > store/websocket_messages/message.txt
+```
+
+
